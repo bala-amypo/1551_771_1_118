@@ -1,16 +1,11 @@
-import java.time.LocalDate;
+/**import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Consolidated Supply Chain Management Entities
- */
 public class SupplyChainManagement {
 
-    // -------------------------------------------------------------------------
-    // 3. DeliveryRecord
-    // -------------------------------------------------------------------------
+    -------------------------------------------------------------------------
     public static class DeliveryRecord {
         private Long id; // Primary Key
         private Long poId; //
@@ -97,4 +92,4 @@ public class SupplyChainManagement {
             }
         }
     }
-}
+}*/
