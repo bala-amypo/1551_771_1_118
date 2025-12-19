@@ -1,71 +1,102 @@
-import jakarta.persistence.*;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.data.annotation.CreatedDate;
+package com.example.demo.model;
+
 import java.time.LocalDateTime;
-import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "supplier_profile")
-class SupplierProfile {
+@Table(name = "supplier_profile", uniqueConstraints = @UniqueConstraint(columnNames = "supplierCode"))
+public class SupplierProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String supplierCode; 
+    @Column(nullable = false, unique = true)
+    private String supplierCode;
 
+    @Column(nullable = false)
     private String supplierName;
+
+    @Column(nullable = false)
     private String email;
+
+    @Column(nullable = false)
     private String phone;
-    
-    private Boolean active = true; 
 
-    @CreatedDate
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private Boolean active;
 
-  
-    public Long getId() { return id; }
-    public String getSupplierCode() { return supplierCode; }
-    public void setSupplierCode(String supplierCode) { this.supplierCode = supplierCode; }
-    public String getSupplierName() { return supplierName; }
-    public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
-}
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
+    public SupplierProfile() {}
 
-interface SupplierRepository extends JpaRepository<SupplierProfile, Long> {
-    List<SupplierProfile> findByActiveTrue();
-    boolean existsBySupplierCode(String supplierCode);
-}
-
-
-@Service
-class SupplierService {
-    
-    private final SupplierRepository repository;
-
-    public SupplierService(SupplierRepository repository) {
-        this.repository = repository;
+    public SupplierProfile(String supplierCode, String supplierName, String email,
+                           String phone, Boolean active, LocalDateTime createdAt) {
+        this.supplierCode = supplierCode;
+        this.supplierName = supplierName;
+        this.email = email;
+        this.phone = phone;
+        this.active = active;
+        this.createdAt = createdAt;
     }
 
-    public List<SupplierProfile> getSuppliersForAnalytics() {
-        return repository.findByActiveTrue();
+    public Long getId() {
+        return id;
     }
 
-    public void seedDatabase() {
-        SupplierProfile s1 = new SupplierProfile();
-        s1.setSupplierCode("SUP-001");
-        s1.setSupplierName("Global Tech");
-        s1.setActive(true);
+    public String getSupplierCode() {
+        return supplierCode;
+    }
 
-        SupplierProfile s2 = new SupplierProfile();
-        s2.setSupplierCode("SUP-002");
-        s2.setSupplierName("Legacy Parts");
-        s2.setActive(false); 
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
 
-        repository.saveAll(List.of(s1, s2));
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
