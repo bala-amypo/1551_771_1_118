@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.AppUser;
 
 public interface AuthService {
 
-    AppUser registerUser(AppUser user);
+    void register(RegisterRequest request);
 
-    AppUser findByUsername(String username);
-
-    boolean existsByEmail(String email);
+    AppUser login(LoginRequest request);
 }
