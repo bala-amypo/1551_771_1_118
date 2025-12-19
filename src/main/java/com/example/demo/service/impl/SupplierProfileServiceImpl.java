@@ -1,11 +1,11 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
+import com.example.demo.entity.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.SupplierProfile;
-import com.example.demo.service.SupplierProfileService;
+import java.util.List;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -22,15 +22,14 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile getSupplierById(Long id) throws SupplierNotFoundException {
+    public SupplierProfile getSupplierById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new SupplierNotFoundException("Supplier not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 
     @Override
-    public SupplierProfile getBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode)
-                .orElseThrow(() -> new SupplierNotFoundException("Supplier not found with code: " + supplierCode));
+    public java.util.Optional<SupplierProfile> getSupplierBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode);
     }
 
     @Override
@@ -40,8 +39,7 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile updateSupplierStatus(Long id, boolean active) {
-        SupplierProfile supplier = repository.findById(id)
-                .orElseThrow(() -> new SupplierNotFoundException("Supplier not found with id: " + id));
+        SupplierProfile supplier = getSupplierById(id);
         supplier.setActive(active);
         return repository.save(supplier);
     }
