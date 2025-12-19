@@ -1,26 +1,14 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.model.SupplierProfile;
+import com.example.demo.entity.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/suppliers")
-@Tag(name = "Supplier Profile API", description = "Manage supplier profiles")
 public class SupplierProfileController {
 
     private final SupplierProfileService supplierService;
@@ -29,33 +17,32 @@ public class SupplierProfileController {
         this.supplierService = supplierService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<SupplierProfile> createSupplier(@RequestBody SupplierProfile supplier) {
-        SupplierProfile created = supplierService.createSupplier(supplier);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
+    @PostMapping
+    public SupplierProfile createSupplier(@Valid @RequestBody SupplierProfile supplier) {
+        return supplierService.createSupplier(supplier);
+    }
+
+    @PutMapping("/{id}")
+    public SupplierProfile updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active
+    ) {
+        return supplierService.updateSupplierStatus(id, active);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<SupplierProfile> getSupplier(@PathVariable Long id) {
-        SupplierProfile supplier = supplierService.getSupplierById(id);
-        return ResponseEntity.ok(supplier);
+    public SupplierProfile getById(@PathVariable Long id) {
+        return supplierService.getSupplierById(id);
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<SupplierProfile>> getAllSuppliers() {
-        List<SupplierProfile> suppliers = supplierService.getAllSuppliers();
-        return ResponseEntity.ok(suppliers);
+    @GetMapping
+    public List<SupplierProfile> getAll() {
+        return supplierService.getAllSuppliers();
     }
 
-    @PutMapping("/{id}/status")
-    public ResponseEntity<SupplierProfile> updateStatus(@PathVariable Long id, @RequestParam boolean active) {
-        SupplierProfile updated = supplierService.updateSupplierStatus(id, active);
-        return ResponseEntity.ok(updated);
-    }
-
-    @GetMapping("/lookup/{supplierCode}")
-    public ResponseEntity<SupplierProfile> lookupByCode(@PathVariable String supplierCode) {
-        SupplierProfile supplier = supplierService.getBySupplierCode(supplierCode);
-        return ResponseEntity.ok(supplier);
+    @GetMapping("/lookup/{code}")
+    public SupplierProfile getByCode(@PathVariable String code) {
+        return supplierService.getBySupplierCode(code)
+                .orElseThrow(() -> new RuntimeException("Supplier not found"));
     }
 }
