@@ -1,58 +1,37 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.RegisterRequest;
-import com.example.demo.entity.AppUser;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.repository.AppUserRepository;
 import com.example.demo.service.AuthService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final AppUserRepository appUserRepository;
-    private final PasswordEncoder passwordEncoder;
+    // simple in-memory store
+    private final Map<String, String> users = new HashMap<>();
 
-    public AuthServiceImpl(
-            AppUserRepository appUserRepository,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.appUserRepository = appUserRepository;
-        this.passwordEncoder = passwordEncoder;
+    @Override
+    public String register(String username, String password) {
+        if (users.containsKey(username)) {
+            return "User already exists";
+        }
+
+        users.put(username, password);
+        return "User registered successfully";
     }
 
     @Override
-    public void register(RegisterRequest request) {
-
-        if (appUserRepository.existsByEmail(request.getEmail())) {
-            throw new BadRequestException("Email already registered");
+    public String login(String username, String password) {
+        if (!users.containsKey(username)) {
+            return "User not found";
         }
 
-        AppUser user = new AppUser();
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(request.getRole());
-
-        appUserRepository.save(user);
-    }
-
-    @Override
-    public AppUser login(LoginRequest request) {
-
-        AppUser user = appUserRepository.findByEmail(request.getEmail())
-                .orElseThrow(() ->
-                        new BadRequestException("Invalid email or password")
-                );
-
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword()
-        )) {
-            throw new BadRequestException("Invalid email or password");
+        if (!users.get(username).equals(password)) {
+            return "Invalid password";
         }
 
-        return user;
+        return "Login successful";
     }
 }
