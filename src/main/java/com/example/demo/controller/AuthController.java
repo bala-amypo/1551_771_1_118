@@ -1,35 +1,44 @@
 package com.example.demo.controller;
 
-import org.springframework.http.ResponseEntity;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.model.AppUser;
+import com.example.demo.repository.AppUserRepository;
+import com.example.demo.security.JwtTokenProvider;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(
-            @RequestParam String username,
-            @RequestParam String password
-    ) {
-        // Dummy auth (tests usually don’t validate real auth)
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Login successful");
-        response.put("username", username);
-        return ResponseEntity.ok(response);
+    private final AppUserRepository repo;
+    private final PasswordEncoder encoder;
+    private final JwtTokenProvider provider;
+
+    public AuthController(AppUserRepository repo,
+                          PasswordEncoder encoder,
+                          JwtTokenProvider provider) {
+        this.repo = repo;
+        this.encoder = encoder;
+        this.provider = provider;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Map<String, String>> register(
-            @RequestParam String username,
-            @RequestParam String password
-    ) {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "User registered");
-        response.put("username", username);
-        return ResponseEntity.ok(response);
+    public AppUser register(@RequestBody RegisterRequest req) {
+        AppUser user = new AppUser();
+        user.setEmail(req.getEmail());
+        user.setPassword(encoder.encode(req.getPassword()));
+        user.setRole(req.getRole());
+        return repo.save(user);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest req) {
+        AppUser user = repo.findByEmail(req.getEmail()).orElseThrow();
+        if (!encoder.matches(req.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid credentials");
+        }
+        return provider.generateToken(user);
     }
 }
