@@ -1,19 +1,38 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.SupplierProfile;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.SupplierProfile;
+import com.example.demo.repository.SupplierProfileRepository;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
+public class SupplierProfileServiceImpl {
 
-public interface SupplierProfileService {
+    private final SupplierProfileRepository repo;
 
-    SupplierProfile createSupplier(SupplierProfile supplier);
+    public SupplierProfileServiceImpl(SupplierProfileRepository repo) {
+        this.repo = repo;
+    }
 
-    SupplierProfile getSupplierById(Long id);
+    public SupplierProfile createSupplier(SupplierProfile s) {
+        return repo.save(s);
+    }
 
-    Optional<SupplierProfile> getSupplierBySupplierCode(String supplierCode);
+    public SupplierProfile getSupplierById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    }
 
-    List<SupplierProfile> getAllSuppliers();
+    public Optional<SupplierProfile> getBySupplierCode(String code) {
+        return repo.findBySupplierCode(code);
+    }
 
-    SupplierProfile updateSupplierStatus(Long id, boolean active);
+    public List<SupplierProfile> getAllSuppliers() {
+        return repo.findAll();
+    }
+
+    public SupplierProfile updateSupplierStatus(Long id, boolean active) {
+        SupplierProfile s = getSupplierById(id);
+        s.setActive(active);
+        return repo.save(s);
+    }
 }

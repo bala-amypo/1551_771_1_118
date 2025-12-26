@@ -1,17 +1,45 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.PurchaseOrderRecord;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
+public class PurchaseOrderServiceImpl {
 
-public interface PurchaseOrderService {
+    private final PurchaseOrderRecordRepository poRepo;
+    private final SupplierProfileRepository supplierRepo;
 
-    PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po);
+    public PurchaseOrderServiceImpl(PurchaseOrderRecordRepository p,
+                                    SupplierProfileRepository s) {
+        this.poRepo = p;
+        this.supplierRepo = s;
+    }
 
-    List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId);
+    public PurchaseOrderRecord createPurchaseOrder(PurchaseOrderRecord po) {
+        SupplierProfile supplier = supplierRepo.findById(po.getSupplierId())
+                .orElseThrow(() -> new BadRequestException("Invalid supplierId"));
 
-    Optional<PurchaseOrderRecord> getPOById(Long id);
+        if (!supplier.getActive()) {
+            throw new BadRequestException("must be active");
+        }
 
-    List<PurchaseOrderRecord> getAllPurchaseOrders();
+        if (po.getQuantity() <= 0) {
+            throw new BadRequestException("Quantity must be > 0");
+        }
+
+        return poRepo.save(po);
+    }
+
+    public List<PurchaseOrderRecord> getPOsBySupplier(Long supplierId) {
+        return poRepo.findBySupplierId(supplierId);
+    }
+
+    public Optional<PurchaseOrderRecord> getPOById(Long id) {
+        return poRepo.findById(id);
+    }
+
+    public List<PurchaseOrderRecord> getAllPurchaseOrders() {
+        return poRepo.findAll();
+    }
 }

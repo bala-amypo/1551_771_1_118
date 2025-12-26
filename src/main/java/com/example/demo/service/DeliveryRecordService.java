@@ -1,17 +1,37 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.DeliveryRecord;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.model.*;
+import com.example.demo.repository.*;
+import java.util.*;
 
-import java.util.List;
-import java.util.Optional;
+public class DeliveryRecordServiceImpl {
 
-public interface DeliveryRecordService {
+    private final DeliveryRecordRepository deliveryRepo;
+    private final PurchaseOrderRecordRepository poRepo;
 
-    DeliveryRecord recordDelivery(DeliveryRecord delivery);
+    public DeliveryRecordServiceImpl(DeliveryRecordRepository d,
+                                     PurchaseOrderRecordRepository p) {
+        this.deliveryRepo = d;
+        this.poRepo = p;
+    }
 
-    List<DeliveryRecord> getDeliveriesByPO(Long poId);
+    public DeliveryRecord recordDelivery(DeliveryRecord d) {
+        poRepo.findById(d.getPoId())
+                .orElseThrow(() -> new BadRequestException("Invalid PO id"));
 
-    Optional<DeliveryRecord> getDeliveryById(Long id);
+        if (d.getDeliveredQuantity() < 0) {
+            throw new BadRequestException("Delivered quantity must be >=");
+        }
 
-    List<DeliveryRecord> getAllDeliveries();
+        return deliveryRepo.save(d);
+    }
+
+    public List<DeliveryRecord> getDeliveriesByPO(Long poId) {
+        return deliveryRepo.findByPoId(poId);
+    }
+
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveryRepo.findAll();
+    }
 }

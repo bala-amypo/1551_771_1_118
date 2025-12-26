@@ -1,16 +1,35 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
-import com.example.demo.entity.SupplierRiskAlert;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.SupplierRiskAlert;
+import com.example.demo.repository.SupplierRiskAlertRepository;
+import java.util.*;
 
-import java.util.List;
+public class SupplierRiskAlertServiceImpl {
 
-public interface SupplierRiskAlertService {
+    private final SupplierRiskAlertRepository repo;
 
-    SupplierRiskAlert createAlert(SupplierRiskAlert alert);
+    public SupplierRiskAlertServiceImpl(SupplierRiskAlertRepository r) {
+        this.repo = r;
+    }
 
-    SupplierRiskAlert resolveAlert(Long id);
+    public SupplierRiskAlert createAlert(SupplierRiskAlert a) {
+        a.setResolved(false);
+        return repo.save(a);
+    }
 
-    List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId);
+    public List<SupplierRiskAlert> getAlertsBySupplier(Long supplierId) {
+        return repo.findBySupplierId(supplierId);
+    }
 
-    List<SupplierRiskAlert> getAllAlerts();
+    public SupplierRiskAlert resolveAlert(Long id) {
+        SupplierRiskAlert a = repo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+        a.setResolved(true);
+        return repo.save(a);
+    }
+
+    public List<SupplierRiskAlert> getAllAlerts() {
+        return repo.findAll();
+    }
 }
