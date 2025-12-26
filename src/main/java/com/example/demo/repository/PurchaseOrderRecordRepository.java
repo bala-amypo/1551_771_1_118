@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PurchaseOrderRecordRepository extends JpaRepository<PurchaseOrderRecord, Long> {
+public interface PurchaseOrderRecordRepository
+        extends JpaRepository<PurchaseOrderRecord, Long> {
 
-    List<PurchaseOrderRecord> findBySupplierCode(String supplierCode);
+    List<PurchaseOrderRecord> findBySupplierId(Long supplierId);
 }
