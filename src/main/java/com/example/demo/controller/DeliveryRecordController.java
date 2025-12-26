@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,30 +10,24 @@ import java.util.List;
 @RequestMapping("/api/deliveries")
 public class DeliveryRecordController {
 
-    private final DeliveryRecordService deliveryService;
+    private final DeliveryRecordService service;
 
-    public DeliveryRecordController(DeliveryRecordService deliveryService) {
-        this.deliveryService = deliveryService;
+    public DeliveryRecordController(DeliveryRecordService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public DeliveryRecord record(@Valid @RequestBody DeliveryRecord delivery) {
-        return deliveryService.recordDelivery(delivery);
+    public DeliveryRecord create(@RequestBody DeliveryRecord d) {
+        return service.recordDelivery(d);
     }
 
     @GetMapping("/po/{poId}")
-    public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
-        return deliveryService.getDeliveriesByPO(poId);
-    }
-
-    @GetMapping("/{id}")
-    public DeliveryRecord getById(@PathVariable Long id) {
-        return deliveryService.getDeliveryById(id)
-                .orElseThrow(() -> new RuntimeException("Delivery not found"));
+    public List<DeliveryRecord> byPo(@PathVariable Long poId) {
+        return service.getDeliveriesByPO(poId);
     }
 
     @GetMapping
-    public List<DeliveryRecord> getAll() {
-        return deliveryService.getAllDeliveries();
+    public List<DeliveryRecord> all() {
+        return service.getAllDeliveries();
     }
 }

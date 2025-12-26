@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,37 +10,29 @@ import java.util.List;
 @RequestMapping("/api/risk-alerts")
 public class SupplierRiskAlertController {
 
-    private final SupplierRiskAlertService alertService;
+    private final SupplierRiskAlertService service;
 
-    public SupplierRiskAlertController(SupplierRiskAlertService alertService) {
-        this.alertService = alertService;
+    public SupplierRiskAlertController(SupplierRiskAlertService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public SupplierRiskAlert create(@Valid @RequestBody SupplierRiskAlert alert) {
-        return alertService.createAlert(alert);
+    public SupplierRiskAlert create(@RequestBody SupplierRiskAlert alert) {
+        return service.createAlert(alert);
     }
 
     @PutMapping("/{id}/resolve")
     public SupplierRiskAlert resolve(@PathVariable Long id) {
-        return alertService.resolveAlert(id);
+        return service.resolveAlert(id);
     }
 
     @GetMapping("/supplier/{supplierId}")
-    public List<SupplierRiskAlert> getBySupplier(@PathVariable Long supplierId) {
-        return alertService.getAlertsBySupplier(supplierId);
-    }
-
-    @GetMapping("/{id}")
-    public SupplierRiskAlert getById(@PathVariable Long id) {
-        return alertService.getAllAlerts().stream()
-                .filter(a -> a.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Alert not found"));
+    public List<SupplierRiskAlert> bySupplier(@PathVariable Long supplierId) {
+        return service.getAlertsBySupplier(supplierId);
     }
 
     @GetMapping
-    public List<SupplierRiskAlert> getAll() {
-        return alertService.getAllAlerts();
+    public List<SupplierRiskAlert> all() {
+        return service.getAllAlerts();
     }
 }
