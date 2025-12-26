@@ -1,44 +1,52 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-    name = "delay_score_records",
-    uniqueConstraints = @UniqueConstraint(columnNames = "poId")
-)
-@Getter
-@Setter
+@Table(name = "delay_score_records")
 public class DelayScoreRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Long supplierId;
-
-    @Column(nullable = false)
     private Long poId;
-
-    @Column(nullable = false)
     private Integer delayDays;
-
-    @Column(nullable = false, length = 20)
     private String delaySeverity;
-
-    @Column(nullable = false)
     private Double score;
-
-    @Column(nullable = false, updatable = false)
     private LocalDateTime computedAt;
 
     @PrePersist
-    void onCreate() {
-        this.computedAt = LocalDateTime.now();
+    public void onCreate() {
+        computedAt = LocalDateTime.now();
     }
+
+    public DelayScoreRecord() {}
+
+    public DelayScoreRecord(Long supplierId, Long poId, Integer delayDays,
+                            String delaySeverity, Double score) {
+        this.supplierId = supplierId;
+        this.poId = poId;
+        this.delayDays = delayDays;
+        this.delaySeverity = delaySeverity;
+        this.score = score;
+    }
+
+    // getters & setters
+    public Integer getDelayDays() { return delayDays; }
+    public void setDelayDays(Integer delayDays) { this.delayDays = delayDays; }
+
+    public String getDelaySeverity() { return delaySeverity; }
+    public void setDelaySeverity(String delaySeverity) { this.delaySeverity = delaySeverity; }
+
+    public Double getScore() { return score; }
+    public void setScore(Double score) { this.score = score; }
+
+    public Long getPoId() { return poId; }
+    public void setPoId(Long poId) { this.poId = poId; }
+
+    public Long getSupplierId() { return supplierId; }
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
 }
