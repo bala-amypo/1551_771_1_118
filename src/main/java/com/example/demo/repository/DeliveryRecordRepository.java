@@ -1,10 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.DeliveryRecord;
-import java.util.*;
+import com.example.demo.entity.DeliveryRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface DeliveryRecordRepository {
-    List<DeliveryRecord> findByPoId(Long poId);
-    List<DeliveryRecord> findAll();
-    DeliveryRecord save(DeliveryRecord d);
+import java.util.List;
+
+@Repository
+public interface DeliveryRecordRepository extends JpaRepository<DeliveryRecord, Long> {
+
+    List<DeliveryRecord> findBySupplierCode(String supplierCode);
 }
