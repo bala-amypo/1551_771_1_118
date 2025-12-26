@@ -1,3 +1,17 @@
 package com.example.demo.repository;
 
-public interface DeliveryRecordRepository {}
+import com.example.demo.model.DeliveryRecord;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface DeliveryRecordRepository {
+
+    DeliveryRecord save(DeliveryRecord delivery);
+
+    List<DeliveryRecord> findByPoId(Long poId);
+
+    List<DeliveryRecord> findAll();
+
+    Optional<DeliveryRecord> findById(Long id);
+}
