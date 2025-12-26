@@ -23,5 +23,9 @@ public class SupplierProfile {
         createdAt = LocalDateTime.now();
     }
 
-    // getters & setters
+    public Long getId() { return id; }
+    public String getSupplierCode() { return supplierCode; }
+    public void setSupplierCode(String supplierCode) { this.supplierCode = supplierCode; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

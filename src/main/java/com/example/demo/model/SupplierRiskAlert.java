@@ -21,5 +21,8 @@ public class SupplierRiskAlert {
         alertDate = LocalDateTime.now();
     }
 
-    // getters & setters
+    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
+    public void setMessage(String message) { this.message = message; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

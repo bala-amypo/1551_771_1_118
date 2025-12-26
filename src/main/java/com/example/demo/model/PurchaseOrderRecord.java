@@ -19,5 +19,8 @@ public class PurchaseOrderRecord {
     private LocalDate promisedDeliveryDate;
     private LocalDate issuedDate;
 
-    // getters & setters
+    public Long getId() { return id; }
+    public Long getSupplierId() { return supplierId; }
+    public Integer getQuantity() { return quantity; }
+    public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
 }

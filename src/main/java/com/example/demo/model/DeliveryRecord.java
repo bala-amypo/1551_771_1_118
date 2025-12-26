@@ -15,5 +15,7 @@ public class DeliveryRecord {
     private Integer deliveredQuantity;
     private String notes;
 
-    // getters & setters
+    public Long getPoId() { return poId; }
+    public Integer getDeliveredQuantity() { return deliveredQuantity; }
+    public LocalDate getActualDeliveryDate() { return actualDeliveryDate; }
 }
