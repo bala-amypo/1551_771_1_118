@@ -25,7 +25,6 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     public DeliveryRecord recordDelivery(DeliveryRecord delivery) {
         poRepository.findById(delivery.getPoId())
                 .orElseThrow(() -> new RuntimeException("Invalid PO id"));
-
         return deliveryRepository.save(delivery);
     }
 
@@ -35,12 +34,12 @@ public class DeliveryRecordServiceImpl implements DeliveryRecordService {
     }
 
     @Override
-    public Optional<DeliveryRecord> getDeliveryById(Long id) {
-        return deliveryRepository.findById(id);
+    public List<DeliveryRecord> getAllDeliveries() {
+        return deliveryRepository.findAll();
     }
 
     @Override
-    public List<DeliveryRecord> getAllDeliveries() {
-        return deliveryRepository.findAll();
+    public Optional<DeliveryRecord> getDeliveryById(Long id) {
+        return deliveryRepository.findById(id);
     }
 }

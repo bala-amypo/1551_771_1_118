@@ -6,6 +6,7 @@ import com.example.demo.service.SupplierProfileService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
@@ -28,11 +29,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public java.util.Optional<SupplierProfile> getSupplierBySupplierCode(String supplierCode) {
-        return repository.findBySupplierCode(supplierCode);
-    }
-
-    @Override
     public List<SupplierProfile> getAllSuppliers() {
         return repository.findAll();
     }
@@ -42,5 +38,10 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
         SupplierProfile supplier = getSupplierById(id);
         supplier.setActive(active);
         return repository.save(supplier);
+    }
+
+    @Override
+    public Optional<SupplierProfile> getSupplierBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode);
     }
 }

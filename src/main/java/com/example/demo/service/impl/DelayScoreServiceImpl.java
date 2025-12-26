@@ -1,14 +1,11 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.DelayScoreRecord;
-import com.example.demo.entity.DeliveryRecord;
-import com.example.demo.entity.PurchaseOrderRecord;
-import com.example.demo.entity.SupplierProfile;
+import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import com.example.demo.service.DelayScoreService;
+import com.example.demo.service.SupplierRiskAlertService;
 import org.springframework.stereotype.Service;
 
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,17 +16,20 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     private final PurchaseOrderRecordRepository poRepository;
     private final DeliveryRecordRepository deliveryRepository;
     private final SupplierProfileRepository supplierRepository;
+    private final SupplierRiskAlertService alertService;
 
     public DelayScoreServiceImpl(
             DelayScoreRecordRepository scoreRepository,
             PurchaseOrderRecordRepository poRepository,
             DeliveryRecordRepository deliveryRepository,
-            SupplierProfileRepository supplierRepository
-    ) {
+            SupplierProfileRepository supplierRepository,
+            SupplierRiskAlertService alertService) {
+
         this.scoreRepository = scoreRepository;
         this.poRepository = poRepository;
         this.deliveryRepository = deliveryRepository;
         this.supplierRepository = supplierRepository;
+        this.alertService = alertService;
     }
 
     @Override
@@ -51,34 +51,27 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         }
 
         DeliveryRecord latest = deliveries.get(deliveries.size() - 1);
-        long delayDays = ChronoUnit.DAYS.between(
-                po.getPromisedDeliveryDate(),
+
+        int delayDays = Math.max(
+                0,
                 latest.getActualDeliveryDate()
+                        .compareTo(po.getPromisedDeliveryDate())
         );
-
-        String severity;
-        double score;
-
-        if (delayDays <= 0) {
-            severity = "ON_TIME";
-            score = 100;
-        } else if (delayDays <= 3) {
-            severity = "MINOR";
-            score = 75;
-        } else if (delayDays <= 7) {
-            severity = "MODERATE";
-            score = 50;
-        } else {
-            severity = "SEVERE";
-            score = 0;
-        }
 
         DelayScoreRecord record = new DelayScoreRecord();
         record.setPoId(poId);
         record.setSupplierId(po.getSupplierId());
-        record.setDelayDays((int) delayDays);
-        record.setDelaySeverity(severity);
-        record.setScore(score);
+        record.setDelayDays(delayDays);
+
+        if (delayDays == 0) {
+            record.setDelaySeverity("ON_TIME");
+        } else if (delayDays <= 3) {
+            record.setDelaySeverity("MINOR");
+        } else {
+            record.setDelaySeverity("SEVERE");
+        }
+
+        record.setScore(100.0 - delayDays * 5);
 
         return scoreRepository.save(record);
     }
@@ -89,12 +82,12 @@ public class DelayScoreServiceImpl implements DelayScoreService {
     }
 
     @Override
-    public Optional<DelayScoreRecord> getScoreById(Long id) {
-        return scoreRepository.findById(id);
+    public List<DelayScoreRecord> getAllScores() {
+        return scoreRepository.findAll();
     }
 
     @Override
-    public List<DelayScoreRecord> getAllScores() {
-        return scoreRepository.findAll();
+    public Optional<DelayScoreRecord> getScoreById(Long id) {
+        return scoreRepository.findById(id);
     }
 }
