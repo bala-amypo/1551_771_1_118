@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,13 +7,14 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierRiskAlert {
+public class SupplierProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long supplierId;
-    private String alertLevel;
-    private Boolean resolved = false;
+    private String supplierCode;
+    private String supplierName;
+    private String email;
+    private Boolean active = true;
 }
