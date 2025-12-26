@@ -1,12 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class SupplierRiskAlert {
 
     @Id
@@ -15,5 +12,14 @@ public class SupplierRiskAlert {
 
     private Long supplierId;
     private String alertLevel;
+    private String message;
     private Boolean resolved = false;
+    private LocalDateTime alertDate;
+
+    @PrePersist
+    void created() {
+        alertDate = LocalDateTime.now();
+    }
+
+    // getters & setters
 }

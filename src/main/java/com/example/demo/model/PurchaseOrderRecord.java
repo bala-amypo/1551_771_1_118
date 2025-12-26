@@ -1,23 +1,23 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class PurchaseOrderRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String poNumber;
+
     private Long supplierId;
+    private String itemDescription;
     private Integer quantity;
-    private LocalDate issuedDate;
     private LocalDate promisedDeliveryDate;
+    private LocalDate issuedDate;
+
+    // getters & setters
 }

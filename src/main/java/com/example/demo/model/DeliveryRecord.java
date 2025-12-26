@@ -1,14 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-
 import java.time.LocalDate;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class DeliveryRecord {
 
     @Id
@@ -16,6 +11,9 @@ public class DeliveryRecord {
     private Long id;
 
     private Long poId;
-    private Integer deliveredQuantity;
     private LocalDate actualDeliveryDate;
+    private Integer deliveredQuantity;
+    private String notes;
+
+    // getters & setters
 }
