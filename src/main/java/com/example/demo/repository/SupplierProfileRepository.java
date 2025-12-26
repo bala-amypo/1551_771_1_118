@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SupplierProfileRepository extends JpaRepository<SupplierProfile, Long> {
+public interface SupplierProfileRepository
+        extends JpaRepository<SupplierProfile, Long> {
 
     Optional<SupplierProfile> findBySupplierCode(String supplierCode);
 }
