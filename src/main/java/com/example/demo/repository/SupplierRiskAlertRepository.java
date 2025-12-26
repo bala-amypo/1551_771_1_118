@@ -1,12 +1,11 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.SupplierRiskAlert;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.example.demo.model.SupplierRiskAlert;
+import java.util.*;
 
-import java.util.List;
-
-public interface SupplierRiskAlertRepository
-        extends JpaRepository<SupplierRiskAlert, Long> {
-
+public interface SupplierRiskAlertRepository {
+    Optional<SupplierRiskAlert> findById(Long id);
     List<SupplierRiskAlert> findBySupplierId(Long supplierId);
+    List<SupplierRiskAlert> findAll();
+    SupplierRiskAlert save(SupplierRiskAlert a);
 }
