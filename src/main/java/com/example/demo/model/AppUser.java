@@ -1,51 +1,23 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.time.LocalDateTime;
-
-@Entity
-@Table(
-    name = "app_users",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = "username"),
-        @UniqueConstraint(columnNames = "email")
-    }
-)
-@Getter
-@Setter
 public class AppUser {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotBlank
-    @Column(nullable = false, length = 50)
-    private String username;
-
-    @Email
-    @NotBlank
-    @Column(nullable = false, length = 100)
     private String email;
+    private Role role;
 
-    @NotBlank
-    @Column(nullable = false)
-    private String password;
+    public AppUser() {}
 
-    @NotBlank
-    @Column(nullable = false, length = 20)
-    private String role;
+    public AppUser(String email, Role role) {
+        this.email = email;
+        this.role = role;
+    }
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    public String getEmail() {
+        return email;
+    }
 
-    @PrePersist
-    void onCreate() {
-        this.createdAt = LocalDateTime.now();
+    public Role getRole() {
+        return role;
     }
 }
