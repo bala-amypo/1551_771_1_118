@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,35 +10,30 @@ import java.util.List;
 @RequestMapping("/api/suppliers")
 public class SupplierProfileController {
 
-    private final SupplierProfileService supplierService;
+    private final SupplierProfileService service;
 
-    public SupplierProfileController(
-            SupplierProfileService supplierService
-    ) {
-        this.supplierService = supplierService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<SupplierProfile>> getAllSuppliers() {
-        return ResponseEntity.ok(supplierService.getAllSuppliers());
-    }
-
-    @GetMapping("/{supplierCode}")
-    public ResponseEntity<SupplierProfile> getBySupplierCode(
-            @PathVariable String supplierCode
-    ) {
-        return supplierService
-                .getSupplierBySupplierCode(supplierCode)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public SupplierProfileController(SupplierProfileService service) {
+        this.service = service;
     }
 
     @PostMapping
-    public ResponseEntity<SupplierProfile> createSupplier(
-            @RequestBody SupplierProfile supplier
-    ) {
-        return ResponseEntity.ok(
-                supplierService.createSupplier(supplier)
-        );
+    public SupplierProfile create(@RequestBody SupplierProfile s) {
+        return service.createSupplier(s);
+    }
+
+    @GetMapping("/{id}")
+    public SupplierProfile get(@PathVariable Long id) {
+        return service.getSupplierById(id);
+    }
+
+    @GetMapping
+    public List<SupplierProfile> all() {
+        return service.getAllSuppliers();
+    }
+
+    @PutMapping("/{id}/status")
+    public SupplierProfile update(@PathVariable Long id,
+                                  @RequestParam boolean active) {
+        return service.updateSupplierStatus(id, active);
     }
 }
