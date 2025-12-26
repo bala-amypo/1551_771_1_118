@@ -1,52 +1,47 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "delay_score_records")
+@Table(name = "delay_scores")
 public class DelayScoreRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long supplierId;
-    private Long poId;
-    private Integer delayDays;
-    private String delaySeverity;
-    private Double score;
-    private LocalDateTime computedAt;
-
-    @PrePersist
-    public void onCreate() {
-        computedAt = LocalDateTime.now();
-    }
+    private String supplierCode;
+    private double score;
 
     public DelayScoreRecord() {}
 
-    public DelayScoreRecord(Long supplierId, Long poId, Integer delayDays,
-                            String delaySeverity, Double score) {
-        this.supplierId = supplierId;
-        this.poId = poId;
-        this.delayDays = delayDays;
-        this.delaySeverity = delaySeverity;
+    public DelayScoreRecord(Long id, String supplierCode, double score) {
+        this.id = id;
+        this.supplierCode = supplierCode;
         this.score = score;
     }
 
-    // getters & setters
-    public Integer getDelayDays() { return delayDays; }
-    public void setDelayDays(Integer delayDays) { this.delayDays = delayDays; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDelaySeverity() { return delaySeverity; }
-    public void setDelaySeverity(String delaySeverity) { this.delaySeverity = delaySeverity; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Double getScore() { return score; }
-    public void setScore(Double score) { this.score = score; }
+    public String getSupplierCode() {
+        return supplierCode;
+    }
 
-    public Long getPoId() { return poId; }
-    public void setPoId(Long poId) { this.poId = poId; }
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
 
-    public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
 }

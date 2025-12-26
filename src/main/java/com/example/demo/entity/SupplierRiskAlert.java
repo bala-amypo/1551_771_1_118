@@ -1,46 +1,47 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "supplier_risk_alerts")
 public class SupplierRiskAlert {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private Long supplierId;
-    private String alertLevel;
-    private String message;
-    private Boolean resolved = false;
-    private LocalDateTime alertDate;
-
-    @PrePersist
-    public void onCreate() {
-        alertDate = LocalDateTime.now();
-        if (resolved == null) resolved = false;
-    }
+    private String supplierCode;
+    private String riskLevel;
 
     public SupplierRiskAlert() {}
 
-    public SupplierRiskAlert(Long supplierId, String alertLevel, String message) {
-        this.supplierId = supplierId;
-        this.alertLevel = alertLevel;
-        this.message = message;
+    public SupplierRiskAlert(Long id, String supplierCode, String riskLevel) {
+        this.id = id;
+        this.supplierCode = supplierCode;
+        this.riskLevel = riskLevel;
     }
 
-    // getters & setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public Long getSupplierId() { return supplierId; }
-    public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public Boolean getResolved() { return resolved; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
+    public String getSupplierCode() {
+        return supplierCode;
+    }
 
-    public String getAlertLevel() { return alertLevel; }
-    public void setAlertLevel(String alertLevel) { this.alertLevel = alertLevel; }
+    public void setSupplierCode(String supplierCode) {
+        this.supplierCode = supplierCode;
+    }
+
+    public String getRiskLevel() {
+        return riskLevel;
+    }
+
+    public void setRiskLevel(String riskLevel) {
+        this.riskLevel = riskLevel;
+    }
 }
