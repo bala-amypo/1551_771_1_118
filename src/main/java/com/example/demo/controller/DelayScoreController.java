@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/delay-scores")
+@RequestMapping("/delay-scores")
 public class DelayScoreController {
 
     private final DelayScoreService delayScoreService;
@@ -16,22 +16,23 @@ public class DelayScoreController {
         this.delayScoreService = delayScoreService;
     }
 
+    // ✅ COMPUTE SCORE
     @PostMapping("/compute/{poId}")
     public DelayScoreRecord compute(@PathVariable Long poId) {
         return delayScoreService.computeDelayScore(poId);
     }
 
-    @GetMapping("/supplier/{supplierId}")
-    public List<DelayScoreRecord> getBySupplier(@PathVariable Long supplierId) {
-        return delayScoreService.getScoresBySupplier(supplierId);
-    }
-
+    // ✅ GET BY ID
     @GetMapping("/{id}")
     public DelayScoreRecord getById(@PathVariable Long id) {
-        return delayScoreService.getScoreById(id)
-                .orElseThrow(() -> new RuntimeException("Score not found"));
+        DelayScoreRecord record = delayScoreService.getScoreById(id);
+        if (record == null) {
+            throw new RuntimeException("DelayScore not found");
+        }
+        return record;
     }
 
+    // ✅ GET ALL
     @GetMapping
     public List<DelayScoreRecord> getAll() {
         return delayScoreService.getAllScores();
