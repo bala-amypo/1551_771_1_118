@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.DelayScoreRecord;
+import com.example.demo.model.DelayScoreRecord;
 
 import java.util.List;
 

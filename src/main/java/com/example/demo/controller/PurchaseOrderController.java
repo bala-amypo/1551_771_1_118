@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.PurchaseOrderRecord;
+import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.service.PurchaseOrderService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

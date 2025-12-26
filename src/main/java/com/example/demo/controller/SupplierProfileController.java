@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.SupplierProfile;
+import com.example.demo.model.SupplierProfile;
 import com.example.demo.service.SupplierProfileService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.SupplierRiskAlert;
+import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.service.SupplierRiskAlertService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

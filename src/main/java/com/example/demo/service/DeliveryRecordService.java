@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.DeliveryRecord;
+import com.example.demo.model.DeliveryRecord;
 
 import java.util.List;
 import java.util.Optional;

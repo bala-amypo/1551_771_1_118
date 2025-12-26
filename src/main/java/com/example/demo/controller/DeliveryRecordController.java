@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.DeliveryRecord;
+import com.example.demo.model.DeliveryRecord;
 import com.example.demo.service.DeliveryRecordService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.PurchaseOrderRecord;
-import com.example.demo.entity.SupplierProfile;
+import com.example.demo.model.PurchaseOrderRecord;
+import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.PurchaseOrderService;

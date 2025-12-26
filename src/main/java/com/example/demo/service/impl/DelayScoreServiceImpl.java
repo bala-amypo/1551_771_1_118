@@ -1,6 +1,6 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.entity.DelayScoreRecord;
+import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.stereotype.Service;
