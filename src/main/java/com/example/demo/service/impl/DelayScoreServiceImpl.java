@@ -5,10 +5,14 @@ import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.SupplierProfileRepository;
+import com.example.demo.service.DelayScoreService;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class DelayScoreServiceImpl {
+@Service
+public class DelayScoreServiceImpl implements DelayScoreService {
 
     private final DelayScoreRecordRepository delayRepo;
     private final PurchaseOrderRecordRepository poRepo;
@@ -30,6 +34,7 @@ public class DelayScoreServiceImpl {
         this.riskAlertService = riskAlertService;
     }
 
+    @Override
     public List<DelayScoreRecord> getScoresBySupplier(long supplierId) {
         return delayRepo.findBySupplierId(supplierId);
     }
