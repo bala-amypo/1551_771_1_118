@@ -2,39 +2,35 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.repository.DelayScoreRecordRepository;
-import com.example.demo.service.DelayScoreService;
-import org.springframework.stereotype.Service;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.SupplierProfileRepository;
 
 import java.util.List;
 
-@Service
-public class DelayScoreServiceImpl implements DelayScoreService {
+public class DelayScoreServiceImpl {
 
-    private final DelayScoreRecordRepository repository;
+    private final DelayScoreRecordRepository delayRepo;
+    private final PurchaseOrderRecordRepository poRepo;
+    private final DeliveryRecordRepository deliveryRepo;
+    private final SupplierProfileRepository supplierRepo;
+    private final SupplierRiskAlertServiceImpl riskAlertService;
 
-    public DelayScoreServiceImpl(DelayScoreRecordRepository repository) {
-        this.repository = repository;
+    public DelayScoreServiceImpl(
+            DelayScoreRecordRepository delayRepo,
+            PurchaseOrderRecordRepository poRepo,
+            DeliveryRecordRepository deliveryRepo,
+            SupplierProfileRepository supplierRepo,
+            SupplierRiskAlertServiceImpl riskAlertService
+    ) {
+        this.delayRepo = delayRepo;
+        this.poRepo = poRepo;
+        this.deliveryRepo = deliveryRepo;
+        this.supplierRepo = supplierRepo;
+        this.riskAlertService = riskAlertService;
     }
 
-    @Override
-    public DelayScoreRecord computeDelayScore(Long poId) {
-        DelayScoreRecord record = new DelayScoreRecord();
-        record.setPoId(poId);
-        record.setSupplierId(1L); // TEMP VALUE
-        record.setDelayDays(2);
-        record.setDelaySeverity("LOW");
-        record.setScore(95.0);
-
-        return repository.save(record);
-    }
-
-    @Override
-    public DelayScoreRecord getScoreById(Long id) {
-        return repository.findById(id).orElse(null);
-    }
-
-    @Override
-    public List<DelayScoreRecord> getAllScores() {
-        return repository.findAll();
+    public List<DelayScoreRecord> getScoresBySupplier(long supplierId) {
+        return delayRepo.findBySupplierId(supplierId);
     }
 }
