@@ -1,47 +1,21 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table(name = "delay_scores")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DelayScoreRecord {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String supplierCode;
-    private double score;
 
-    public DelayScoreRecord() {}
-
-    public DelayScoreRecord(Long id, String supplierCode, double score) {
-        this.id = id;
-        this.supplierCode = supplierCode;
-        this.score = score;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
+    private Long poId;
+    private Long supplierId;
+    private Integer delayDays;
+    private String delaySeverity;
+    private Double score;
 }

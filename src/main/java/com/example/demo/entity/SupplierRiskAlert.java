@@ -1,47 +1,19 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table(name = "supplier_risk_alerts")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SupplierRiskAlert {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String supplierCode;
-    private String riskLevel;
 
-    public SupplierRiskAlert() {}
-
-    public SupplierRiskAlert(Long id, String supplierCode, String riskLevel) {
-        this.id = id;
-        this.supplierCode = supplierCode;
-        this.riskLevel = riskLevel;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public String getRiskLevel() {
-        return riskLevel;
-    }
-
-    public void setRiskLevel(String riskLevel) {
-        this.riskLevel = riskLevel;
-    }
+    private Long supplierId;
+    private String alertLevel;
+    private Boolean resolved = false;
 }

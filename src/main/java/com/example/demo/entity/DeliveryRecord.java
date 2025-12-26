@@ -1,47 +1,21 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "delivery_records")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DeliveryRecord {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String supplierCode;
-    private int delayDays;
 
-    public DeliveryRecord() {}
-
-    public DeliveryRecord(Long id, String supplierCode, int delayDays) {
-        this.id = id;
-        this.supplierCode = supplierCode;
-        this.delayDays = delayDays;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public int getDelayDays() {
-        return delayDays;
-    }
-
-    public void setDelayDays(int delayDays) {
-        this.delayDays = delayDays;
-    }
+    private Long poId;
+    private Integer deliveredQuantity;
+    private LocalDate actualDeliveryDate;
 }

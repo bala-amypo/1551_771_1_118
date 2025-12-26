@@ -1,47 +1,23 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "purchase_orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PurchaseOrderRecord {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String supplierCode;
-    private int quantity;
 
-    public PurchaseOrderRecord() {}
-
-    public PurchaseOrderRecord(Long id, String supplierCode, int quantity) {
-        this.id = id;
-        this.supplierCode = supplierCode;
-        this.quantity = quantity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getSupplierCode() {
-        return supplierCode;
-    }
-
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+    private String poNumber;
+    private Long supplierId;
+    private Integer quantity;
+    private LocalDate issuedDate;
+    private LocalDate promisedDeliveryDate;
 }
