@@ -1,23 +1,18 @@
-package com.example.demo.model;
+package com.example.demo.dto;
 
-public class AppUser {
+import com.example.demo.model.Role;
 
-    private Long id;
+public class RegisterRequest {
+
     private String email;
+    private String password;
     private Role role;
 
-    public AppUser() {}
-
-    public AppUser(String email, Role role) {
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setRole(Role role) {
         this.role = role;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Role getRole() {
-        return role;
     }
 }
