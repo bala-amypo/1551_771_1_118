@@ -3,73 +3,66 @@ package com.example.demo.service.impl;
 import com.example.demo.model.DelayScoreRecord;
 import com.example.demo.model.DeliveryRecord;
 import com.example.demo.model.PurchaseOrderRecord;
-import com.example.demo.repository.DelayScoreRepository;
+import com.example.demo.repository.DelayScoreRecordRepository;
 import com.example.demo.repository.DeliveryRecordRepository;
-import com.example.demo.repository.PurchaseOrderRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final PurchaseOrderRepository purchaseOrderRepository;
-    private final DeliveryRecordRepository deliveryRepository;
-    private final DelayScoreRepository delayScoreRepository;
+    private final PurchaseOrderRecordRepository poRepo;
+    private final DeliveryRecordRepository deliveryRepo;
+    private final DelayScoreRecordRepository delayRepo;
 
     public DelayScoreServiceImpl(
-            PurchaseOrderRepository purchaseOrderRepository,
-            DeliveryRecordRepository deliveryRepository,
-            DelayScoreRepository delayScoreRepository
+            PurchaseOrderRecordRepository poRepo,
+            DeliveryRecordRepository deliveryRepo,
+            DelayScoreRecordRepository delayRepo
     ) {
-        this.purchaseOrderRepository = purchaseOrderRepository;
-        this.deliveryRepository = deliveryRepository;
-        this.delayScoreRepository = delayScoreRepository;
+        this.poRepo = poRepo;
+        this.deliveryRepo = deliveryRepo;
+        this.delayRepo = delayRepo;
     }
 
-    // ===============================
-    // CALCULATE SCORE
-    // ===============================
     @Override
-    public DelayScoreRecord calculateScore(Long poId) {
+    public DelayScoreRecord calculateDelayScore(Long poId) {
 
-        PurchaseOrderRecord po = purchaseOrderRepository
-                .findById(poId)
-                .orElseThrow(() -> new RuntimeException("Purchase Order not found"));
+        PurchaseOrderRecord po = poRepo.findById(poId)
+                .orElseThrow(() -> new RuntimeException("PO not found"));
 
-        Optional<DeliveryRecord> deliveryOpt =
-                deliveryRepository.findFirstByPoIdOrderByActualDeliveryDateDesc(poId);
-
-        if (deliveryOpt.isEmpty() || po.getPromisedDeliveryDate() == null) {
-            return null;
-        }
-
-        DeliveryRecord delivery = deliveryOpt.get();
+        DeliveryRecord delivery = deliveryRepo
+                .findFirstByPoIdOrderByActualDeliveryDateDesc(poId)
+                .orElseThrow(() -> new RuntimeException("Delivery not found"));
 
         long delayDays = ChronoUnit.DAYS.between(
                 po.getPromisedDeliveryDate(),
                 delivery.getActualDeliveryDate()
         );
 
-        int score = delayDays <= 0 ? 100 : Math.max(0, 100 - (int) delayDays * 5);
+        if (delayDays < 0) delayDays = 0;
+
+        int score = (int) Math.min(delayDays * 10, 100);
 
         DelayScoreRecord record = new DelayScoreRecord();
         record.setPoId(poId);
         record.setDelayDays((int) delayDays);
         record.setScore(score);
-        record.setDelaySeverity(delayDays <= 0 ? "NONE" : "HIGH");
+        record.setDelaySeverity(
+                delayDays == 0 ? "ON_TIME" :
+                delayDays <= 3 ? "LOW" :
+                delayDays <= 7 ? "MEDIUM" : "HIGH"
+        );
 
-        return delayScoreRepository.save(record);
+        return delayRepo.save(record);
     }
 
-    // ===============================
-    // GET ALL SCORES  ✅ REQUIRED
-    // ===============================
     @Override
     public List<DelayScoreRecord> getAllScores() {
-        return delayScoreRepository.findAll();
+        return delayRepo.findAll();
     }
 }
