@@ -17,17 +17,17 @@ public class DeliveryRecordController {
     }
 
     @PostMapping
-    public DeliveryRecord create(@RequestBody DeliveryRecord d) {
-        return service.recordDelivery(d);
+    public DeliveryRecord create(@RequestBody DeliveryRecord delivery) {
+        return service.recordDelivery(delivery);
     }
 
     @GetMapping("/po/{poId}")
-    public List<DeliveryRecord> byPo(@PathVariable Long poId) {
+    public List<DeliveryRecord> getByPo(@PathVariable Long poId) {
         return service.getDeliveriesByPO(poId);
     }
 
     @GetMapping
-    public List<DeliveryRecord> all() {
+    public List<DeliveryRecord> getAll() {
         return service.getAllDeliveries();
     }
 }
