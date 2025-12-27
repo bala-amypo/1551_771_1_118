@@ -4,9 +4,11 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierRiskAlert;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.SupplierRiskAlertService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class SupplierRiskAlertServiceImpl implements SupplierRiskAlertService {
 
     private final SupplierRiskAlertRepository repository;

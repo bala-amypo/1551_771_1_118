@@ -5,16 +5,18 @@ import com.example.demo.model.DeliveryRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DeliveryRecordService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     private final DeliveryRecordRepository deliveryRepository;
     private final PurchaseOrderRecordRepository poRepository;
 
     public DeliveryRecordServiceImpl(DeliveryRecordRepository deliveryRepository,
-                                     PurchaseOrderRecordRepository poRepository) {
+                                      PurchaseOrderRecordRepository poRepository) {
         this.deliveryRepository = deliveryRepository;
         this.poRepository = poRepository;
     }
