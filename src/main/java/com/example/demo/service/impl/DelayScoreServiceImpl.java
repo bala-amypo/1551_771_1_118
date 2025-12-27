@@ -5,9 +5,9 @@ import com.example.demo.model.DeliveryRecord;
 import com.example.demo.model.PurchaseOrderRecord;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.model.SupplierRiskAlert;
-import com.example.demo.repository.DelayScoreRepository;
-import com.example.demo.repository.DeliveryRepository;
-import com.example.demo.repository.PurchaseOrderRepository;
+import com.example.demo.repository.DelayScoreRecordRepository;
+import com.example.demo.repository.DeliveryRecordRepository;
+import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.repository.SupplierRiskAlertRepository;
 import com.example.demo.service.DelayScoreService;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,14 @@ import java.util.Optional;
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
-    private final PurchaseOrderRepository purchaseOrderRepository;
-    private final DeliveryRepository deliveryRepository;
+    private final PurchaseOrderRecordRepository purchaseOrderRepository;
+    private final DeliveryRecordRepository deliveryRepository;
     private final DelayScoreRecordRepository delayScoreRepository;
     private final SupplierRiskAlertRepository alertRepository;
 
     public DelayScoreServiceImpl(
-            PurchaseOrderRepository purchaseOrderRepository,
-            DeliveryRepository deliveryRepository,
+            PurchaseOrderRecordRepository purchaseOrderRepository,
+            DeliveryRecordRepository deliveryRepository,
             DelayScoreRecordRepository delayScoreRepository,
             SupplierRiskAlertRepository alertRepository
     ) {
