@@ -1,15 +1,3 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.model.*;
-import com.example.demo.repository.*;
-import com.example.demo.service.DelayScoreService;
-import com.example.demo.service.SupplierRiskAlertService;
-import org.springframework.stereotype.Service;
-
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
 @Service
 public class DelayScoreServiceImpl implements DelayScoreService {
 
@@ -25,7 +13,6 @@ public class DelayScoreServiceImpl implements DelayScoreService {
             DeliveryRecordRepository deliveryRepo,
             SupplierProfileRepository supplierRepo,
             SupplierRiskAlertService alertService) {
-
         this.delayRepo = delayRepo;
         this.poRepo = poRepo;
         this.deliveryRepo = deliveryRepo;
