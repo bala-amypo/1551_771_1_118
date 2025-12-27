@@ -20,13 +20,13 @@ public class DelayScoreServiceImpl implements DelayScoreService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final DeliveryRepository deliveryRepository;
-    private final DelayScoreRepository delayScoreRepository;
+    private final DelayScoreRecordRepository delayScoreRepository;
     private final SupplierRiskAlertRepository alertRepository;
 
     public DelayScoreServiceImpl(
             PurchaseOrderRepository purchaseOrderRepository,
             DeliveryRepository deliveryRepository,
-            DelayScoreRepository delayScoreRepository,
+            DelayScoreRecordRepository delayScoreRepository,
             SupplierRiskAlertRepository alertRepository
     ) {
         this.purchaseOrderRepository = purchaseOrderRepository;
