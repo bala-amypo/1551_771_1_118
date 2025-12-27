@@ -1,7 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.AppUser;
-
 import java.util.Optional;
 
 public interface AppUserRepository {
