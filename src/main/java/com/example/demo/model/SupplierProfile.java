@@ -11,29 +11,22 @@ public class SupplierProfile {
 
     private String supplierName;
     private String email;
+    private String supplierCode;
+    private boolean active = true;
 
-    // ===== REQUIRED =====
-    public Long getId() {
-        return id;
-    }
+    // GETTERS & SETTERS
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getSupplierName() { return supplierName; }
+    public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
 
-    public String getSupplierName() {
-        return supplierName;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
+    public String getSupplierCode() { return supplierCode; }
+    public void setSupplierCode(String supplierCode) { this.supplierCode = supplierCode; }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public boolean getActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 }
