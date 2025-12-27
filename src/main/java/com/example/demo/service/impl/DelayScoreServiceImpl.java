@@ -70,7 +70,8 @@ public class DelayScoreServiceImpl implements DelayScoreService {
         record.setPoId(poId);
         record.setDelayDays(delayDays);
         record.setDelaySeverity(severity);
-        record.setScore(score);
+        record.setScore((int) calculatedScore);
+
 
         DelayScoreRecord saved = scoreRepo.save(record);
 
