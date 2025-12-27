@@ -1,29 +1,31 @@
 package com.example.demo.security;
 
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import com.example.demo.model.AppUser;
+import com.example.demo.repository.AppUserRepository;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.*;
 
-import java.util.Collections;
+import java.util.List;
 
-@Service
 public class CustomUserDetailsService implements UserDetailsService {
+
+    private final AppUserRepository userRepository;
+
+    public CustomUserDetailsService(AppUserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        // Dummy in-memory user (safe for tests)
-        if (!"user".equals(username)) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        AppUser user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         return new User(
-                "user",
-                "{noop}password", // {noop} avoids password encoder issues
-                Collections.emptyList()
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().name()))
         );
     }
 }

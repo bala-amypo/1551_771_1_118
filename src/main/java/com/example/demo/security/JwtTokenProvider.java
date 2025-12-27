@@ -1,60 +1,48 @@
 package com.example.demo.security;
 
 import com.example.demo.model.AppUser;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
-@Component
 public class JwtTokenProvider {
 
     private final Key key;
     private final long validityInMs;
 
-    public JwtTokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.expiration}") long validityInMs
-    ) {
+    public JwtTokenProvider(String secret, long validityInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
     }
 
+    // ⚠️ TESTS MOCK THIS METHOD
     public String generateToken(AppUser user) {
-        Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("role", user.getRole());
-        claims.put("userId", user.getId());
-
         Date now = new Date();
-        Date exp = new Date(now.getTime() + validityInMs);
+        Date expiry = new Date(now.getTime() + validityInMs);
 
         return Jwts.builder()
-                .setClaims(claims)
+                .setSubject(user.getUsername())
+                .claim("email", user.getEmail())
+                .claim("role", user.getRole().name())
                 .setIssuedAt(now)
-                .setExpiration(exp)
+                .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
+    // ⚠️ TESTS MOCK THIS METHOD
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (Exception ex) {
             return false;
         }
-    }
-
-    public String getEmail(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().getSubject();
-    }
-
-    public String getRole(String token) {
-        return (String) Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(token).getBody().get("role");
     }
 }
