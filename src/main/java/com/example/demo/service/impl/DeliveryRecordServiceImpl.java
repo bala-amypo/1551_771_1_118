@@ -5,10 +5,11 @@ import com.example.demo.model.DeliveryRecord;
 import com.example.demo.repository.DeliveryRecordRepository;
 import com.example.demo.repository.PurchaseOrderRecordRepository;
 import com.example.demo.service.DeliveryRecordService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-// ❌ REMOVE @Service
+@Service
 public class DeliveryRecordServiceImpl implements DeliveryRecordService {
 
     private final DeliveryRecordRepository deliveryRepository;
