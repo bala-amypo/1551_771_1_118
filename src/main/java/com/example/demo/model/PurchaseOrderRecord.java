@@ -10,17 +10,58 @@ public class PurchaseOrderRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    private String poNumber;
-
     private Long supplierId;
-    private String itemDescription;
-    private Integer quantity;
+    private int quantity;
+    private String poNumber;
     private LocalDate promisedDeliveryDate;
     private LocalDate issuedDate;
 
-    public Long getId() { return id; }
-    public Long getSupplierId() { return supplierId; }
-    public Integer getQuantity() { return quantity; }
-    public LocalDate getPromisedDeliveryDate() { return promisedDeliveryDate; }
+    // ===== REQUIRED =====
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(Long supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getPoNumber() {
+        return poNumber;
+    }
+
+    public void setPoNumber(String poNumber) {
+        this.poNumber = poNumber;
+    }
+
+    public LocalDate getPromisedDeliveryDate() {
+        return promisedDeliveryDate;
+    }
+
+    public void setPromisedDeliveryDate(LocalDate promisedDeliveryDate) {
+        this.promisedDeliveryDate = promisedDeliveryDate;
+    }
+
+    public LocalDate getIssuedDate() {
+        return issuedDate;
+    }
+
+    public void setIssuedDate(LocalDate issuedDate) {
+        this.issuedDate = issuedDate;
+    }
 }
