@@ -17,23 +17,24 @@ public class SupplierProfileController {
     }
 
     @PostMapping
-    public SupplierProfile create(@RequestBody SupplierProfile s) {
-        return service.createSupplier(s);
+    public SupplierProfile create(@RequestBody SupplierProfile supplier) {
+        return service.createSupplier(supplier);
     }
 
     @GetMapping("/{id}")
-    public SupplierProfile get(@PathVariable Long id) {
+    public SupplierProfile getById(@PathVariable Long id) {
         return service.getSupplierById(id);
     }
 
     @GetMapping
-    public List<SupplierProfile> all() {
+    public List<SupplierProfile> getAll() {
         return service.getAllSuppliers();
     }
 
     @PutMapping("/{id}/status")
-    public SupplierProfile update(@PathVariable Long id,
-                                  @RequestParam boolean active) {
+    public SupplierProfile updateStatus(
+            @PathVariable Long id,
+            @RequestParam boolean active) {
         return service.updateSupplierStatus(id, active);
     }
 }

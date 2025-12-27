@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.security.JwtTokenProvider;
@@ -12,33 +13,49 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AppUserRepository repo;
-    private final PasswordEncoder encoder;
-    private final JwtTokenProvider provider;
+    private final AppUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(AppUserRepository repo,
-                          PasswordEncoder encoder,
-                          JwtTokenProvider provider) {
-        this.repo = repo;
-        this.encoder = encoder;
-        this.provider = provider;
+    public AuthController(AppUserRepository userRepository,
+                          PasswordEncoder passwordEncoder,
+                          JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
-    public AppUser register(@RequestBody RegisterRequest req) {
+    public String register(@RequestBody RegisterRequest request) {
+
+        if (userRepository.existsByUsername(request.getUsername())) {
+            throw new BadRequestException("Username already taken");
+        }
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Email already taken");
+        }
+
         AppUser user = new AppUser();
-        user.setEmail(req.getEmail());
-        user.setPassword(encoder.encode(req.getPassword()));
-        user.setRole(req.getRole());
-        return repo.save(user);
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole(request.getRole());
+
+        AppUser saved = userRepository.save(user);
+        return jwtTokenProvider.generateToken(saved);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest req) {
-        AppUser user = repo.findByEmail(req.getEmail()).orElseThrow();
-        if (!encoder.matches(req.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+    public String login(@RequestBody LoginRequest request) {
+
+        AppUser user = userRepository.findByEmail(request.getUsername())
+                .orElseThrow(() -> new BadRequestException("Invalid credentials"));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
         }
-        return provider.generateToken(user);
+
+        return jwtTokenProvider.generateToken(user);
     }
 }
