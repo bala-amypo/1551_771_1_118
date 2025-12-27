@@ -3,9 +3,7 @@ package com.example.demo.dto;
 public class JwtResponse {
 
     private String token;
-    private String type = "Bearer";
-
-    public JwtResponse() {}
+    private String tokenType = "Bearer";
 
     public JwtResponse(String token) {
         this.token = token;
@@ -15,15 +13,7 @@ public class JwtResponse {
         return token;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
+    public String getTokenType() {
+        return tokenType;
     }
 }
