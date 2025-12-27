@@ -5,7 +5,8 @@ import com.example.demo.model.DelayScoreRecord;
 import java.util.List;
 
 public interface DelayScoreService {
-    DelayScoreRecord computeDelayScore(Long poId);
-    List<DelayScoreRecord> getScoresBySupplier(Long supplierId);
+
+    DelayScoreRecord calculateScore(Long poId);
+
     List<DelayScoreRecord> getAllScores();
 }
