@@ -4,21 +4,25 @@ import com.example.demo.model.AppUser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
 
+@Component
 public class JwtTokenProvider {
 
     private final Key key;
     private final long validityInMs;
 
-    public JwtTokenProvider(String secret, long validityInMs) {
+    public JwtTokenProvider(
+            @Value("${jwt.secret}") String secret,
+            @Value("${jwt.expiration}") long validityInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.validityInMs = validityInMs;
     }
 
-    // ⚠️ TESTS MOCK THIS METHOD
     public String generateToken(AppUser user) {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMs);
@@ -33,7 +37,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    // ⚠️ TESTS MOCK THIS METHOD
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

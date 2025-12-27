@@ -4,9 +4,11 @@ import com.example.demo.model.AppUser;
 import com.example.demo.repository.AppUserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final AppUserRepository userRepository;
