@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface DelayScoreService {
 
-    DelayScoreRecord calculateScore(Long poId);
+    DelayScoreRecord calculateDelayScore(Long poId);
 
     List<DelayScoreRecord> getAllScores();
 }
