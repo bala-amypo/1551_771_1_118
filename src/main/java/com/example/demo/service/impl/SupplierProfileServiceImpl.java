@@ -4,11 +4,10 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.SupplierProfile;
 import com.example.demo.repository.SupplierProfileRepository;
 import com.example.demo.service.SupplierProfileService;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Service
 public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     private final SupplierProfileRepository repository;
@@ -19,8 +18,6 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
 
     @Override
     public SupplierProfile createSupplier(SupplierProfile supplier) {
-        repository.findBySupplierCode(supplier.getSupplierCode())
-                .ifPresent(s -> { throw new IllegalArgumentException("Duplicate supplierCode"); });
         return repository.save(supplier);
     }
 
@@ -31,9 +28,8 @@ public class SupplierProfileServiceImpl implements SupplierProfileService {
     }
 
     @Override
-    public SupplierProfile getBySupplierCode(String code) {
-        return repository.findBySupplierCode(code)
-                .orElseThrow(() -> new ResourceNotFoundException("Supplier not found"));
+    public Optional<SupplierProfile> getBySupplierCode(String supplierCode) {
+        return repository.findBySupplierCode(supplierCode);
     }
 
     @Override
