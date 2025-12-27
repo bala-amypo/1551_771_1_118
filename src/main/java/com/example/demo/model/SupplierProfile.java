@@ -1,22 +1,41 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "supplier_profiles")
 public class SupplierProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String supplierCode;
+
     private String supplierName;
     private String email;
-    private String supplierCode;
-    private boolean active = true;
+    private String phone;
 
-    // GETTERS & SETTERS
+    private Boolean active = true;
+
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    void onCreate() {
+        this.createdAt = LocalDateTime.now();
+        if (active == null) active = true;
+    }
+
+    public SupplierProfile() {}
+
+    // getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public String getSupplierCode() { return supplierCode; }
+    public void setSupplierCode(String supplierCode) { this.supplierCode = supplierCode; }
 
     public String getSupplierName() { return supplierName; }
     public void setSupplierName(String supplierName) { this.supplierName = supplierName; }
@@ -24,9 +43,9 @@ public class SupplierProfile {
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
-    public String getSupplierCode() { return supplierCode; }
-    public void setSupplierCode(String supplierCode) { this.supplierCode = supplierCode; }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    public boolean getActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public Boolean getActive() { return active; }
+    public void setActive(Boolean active) { this.active = active; }
 }

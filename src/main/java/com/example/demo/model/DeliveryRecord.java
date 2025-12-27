@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "delivery_records")
 public class DeliveryRecord {
 
     @Id
@@ -11,39 +12,25 @@ public class DeliveryRecord {
     private Long id;
 
     private Long poId;
-    private int deliveredQuantity;
     private LocalDate actualDeliveryDate;
+    private Integer deliveredQuantity;
+    private String notes;
 
-    // ===== REQUIRED =====
-    public Long getId() {
-        return id;
-    }
+    public DeliveryRecord() {}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // getters & setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getPoId() {
-        return poId;
-    }
+    public Long getPoId() { return poId; }
+    public void setPoId(Long poId) { this.poId = poId; }
 
-    public void setPoId(Long poId) {
-        this.poId = poId;
-    }
+    public LocalDate getActualDeliveryDate() { return actualDeliveryDate; }
+    public void setActualDeliveryDate(LocalDate actualDeliveryDate) { this.actualDeliveryDate = actualDeliveryDate; }
 
-    public int getDeliveredQuantity() {
-        return deliveredQuantity;
-    }
+    public Integer getDeliveredQuantity() { return deliveredQuantity; }
+    public void setDeliveredQuantity(Integer deliveredQuantity) { this.deliveredQuantity = deliveredQuantity; }
 
-    public void setDeliveredQuantity(int deliveredQuantity) {
-        this.deliveredQuantity = deliveredQuantity;
-    }
-
-    public LocalDate getActualDeliveryDate() {
-        return actualDeliveryDate;
-    }
-
-    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
-        this.actualDeliveryDate = actualDeliveryDate;
-    }
+    public String getNotes() { return notes; }
+    public void setNotes(String notes) { this.notes = notes; }
 }
