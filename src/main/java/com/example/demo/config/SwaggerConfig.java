@@ -6,7 +6,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import.java.utilList;
+import.java.util.List;
 import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class SwaggerConfig {
