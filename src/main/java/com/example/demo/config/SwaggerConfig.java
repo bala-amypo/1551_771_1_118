@@ -6,7 +6,8 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import.java.utilList;
+import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class SwaggerConfig {
 
@@ -20,6 +21,9 @@ public class SwaggerConfig {
                         .version("1.0")
                         .description("JWT-secured Supply Chain Analytics API")
                 )
+                .servers(List.of(
+                        new Server().url("https://9123.pro604cr.amypo.ai")
+                ))
                 // 🔐 Enable Authorize button
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME))
                 .components(
