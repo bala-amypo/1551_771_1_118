@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DeliveryRecordServiceImpl {
+public class DeliveryRecordServiceImpl  {
 
     private DeliveryRecordRepository deliveryRepo;
     private PurchaseOrderRecordRepository poRepo;
